@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #202124;
+  
+}
+.container{
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.barra{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+ 
+  border-radius: 10px;
+}
+.barra .casa{
+  width: 200px;
+  margin-left: 30px;
+}
+.barra .logo{
+  width: 300px;
+  margin-right: 30px;
+}
+.boton{
+ display: flex;
+ justify-content: center;
+ margin-top: 50px;
+}
+button{
+  background: cornflowerblue;
+  color: #fff;
+  border: 1px solid;
+  width: 100px;
+  height: 50px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 10px;
+}
+button:hover{
+  cursor: pointer;
+}
+.tarjetas{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.tarjetas img{
+  width: 200px;
+}
+.tarjetas .barrera{
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tarjetas .lluvia{
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tarjetas .inundacion {
+  background: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
