@@ -12,49 +12,80 @@ import Swal from 'sweetalert2'
 
 function App() {
 
+  const [estado, setEstado] = useState({
+    barrera: ' ',
+    lluvia: ' ',
+    humedad: ' '
+  }); 
+
+  const [hexaSigfox, setHexaSigfox] = useState(' ');
+
+  const [count, setCount] = useState(0);
+  const [intervalId, setIntervalId] = useState(0);
+
+  const mensajes = (sigfox) => {
+    const barrera =  parseInt(sigfox.charAt(1));
+    const lluvia = parseInt(sigfox.charAt(3));
+    const humedad = parseInt(sigfox.charAt(5));
+
+    let barreraVal = ''
+    let lluviaVal = ''
+    let humedadVal = ''
+
+    if(barrera === 0){
+      barreraVal = "Barrera abajo"
+    }else if(barrera === 1){
+      barreraVal = "Barrera a la mitad"
+    }else if(barrera === 2){
+      barreraVal = "Barrera arriba"
+    }
+
+    if(lluvia === 0){
+      lluviaVal = "No está lloviendo"
+    }else if(lluvia === 1){
+      lluviaVal = "Está lloviendo"
+    }
+
+    if(humedad === 0){
+      humedadVal = "Sin inundación"
+    }else if(humedad === 1){
+      humedadVal = "Inundación pequeña"
+    }else if(humedad ===2){
+      humedadVal = "Inundación"
+    }
+
+    //Primeros dos valores del hex de sigfox 
+    setEstado({barrera: barreraVal,
+              lluvia: lluviaVal,
+              humedad: humedadVal});
+
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: barreraVal + '\n' + lluviaVal + '\n' + humedadVal,
+      showConfirmButton: false,
+      timer: 3000
+    })
+  }
+
   //Consultar API desarrollada de AWS
-  const consultarBdd= ()=>{
-    axios.get("https://7prb4nwyxa.execute-api.us-east-1.amazonaws.com/items").then(response=>{
-      
+  const consultarBdd= async ()=>{
+    await axios.get("https://7prb4nwyxa.execute-api.us-east-1.amazonaws.com/items").then(response=>{
+
     //Obtener ultimo valor de la BDD
       const lista=response.data.Items;
       const lastItem=lista[lista.length-1];
       //Valor hex de sensores Sigfox 00-00-00 
-      const hexaSigfox=Object.values(lastItem)[0].data;
-
-      //Primeros dos valores del hex de sigfox 
-      const sensor1= hexaSigfox.charAt(0)+hexaSigfox.charAt(1);
-      //Segundos dos valores del hex de sigfox 
-      const sensor2= hexaSigfox.charAt(2)+hexaSigfox.charAt(3);
-      //Ultimos dos valores del hex de sigfox 
-      const sensor3= hexaSigfox.charAt(4)+hexaSigfox.charAt(5);
-
-
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Se vio BDD: '+hexaSigfox,
-        showConfirmButton: false,
-        timer: 1500
-      })
-      console.log(sensor1);
-      console.log(sensor2);
-      console.log(sensor3);
-      console.log(hexaSigfox);
-
-      //lista.forEach(element => {
-        //console.log(element);
-        //for(let values in element){
-          //console.log(element[values]);
-        //}
-      //});
-      
-     
+      if(hexaSigfox !== Object.values(lastItem)[0].data){
+        setHexaSigfox(Object.values(lastItem)[0].data);
+        mensajes(Object.values(lastItem)[0].data);
+      }   
     })
   }
 
-  const [count, setCount] = useState(0);
-  const [intervalId, setIntervalId] = useState(0);
+    useEffect(() => {
+      consultarBdd();
+    }, []);
   
   //Funcion para iniciar a contar segundos
   const handleClick = () => {
@@ -71,13 +102,11 @@ function App() {
     setIntervalId(newIntervalId)
   }
   //Llamar funcion cada 10 segundos
-  if ((count%10)===0){
-    
-    consultarBdd();
-    
-  }
+  //if ((count%10)===0){
+   //  consultarBdd();
+ // }
   //Imprimier contador de segudnos
-  console.log(count);
+  //console.log(count);
   return (
     <div className="container">
       <div className="barra">
@@ -92,19 +121,19 @@ function App() {
         <div className="barrera"> 
         <h3>Barrera</h3>
         <img src={barrera} alt="barrera"></img>
-        <p>Status: </p>
+        <p>Status: {estado.barrera}</p>
         
         </div>
         <div className="lluvia">
           <h3>Lluvia</h3>
           <img src={lluvia} alt="lluvia"></img>
-          <p>Status: </p>
+          <p>Status: {estado.lluvia}</p>
         </div>
 
         <div className="inundacion">
         <h3>Inundación</h3>
           <img src={ondas} alt="ondas"></img>
-        <p>Status: </p>
+        <p>Status: {estado.humedad}</p>
        
         </div>
       </div>
