@@ -102,9 +102,9 @@ function App() {
     setIntervalId(newIntervalId)
   }
   //Llamar funcion cada 10 segundos
-  //if ((count%10)===0){
-   //  consultarBdd();
- // }
+  if ((count%10)===0){
+     consultarBdd();
+  }
   //Imprimier contador de segudnos
   //console.log(count);
   return (
